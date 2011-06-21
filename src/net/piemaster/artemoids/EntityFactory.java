@@ -1,6 +1,6 @@
 package net.piemaster.artemoids;
 
-import net.piemaster.artemoids.components.Enemy;
+import net.piemaster.artemoids.components.Asteroid;
 import net.piemaster.artemoids.components.Expires;
 import net.piemaster.artemoids.components.Health;
 import net.piemaster.artemoids.components.SpatialForm;
@@ -25,17 +25,28 @@ public class EntityFactory
 
 		return missile;
 	}
+	public static Entity createMissile(World world, Transform parent)
+	{
+		Entity missile = world.createEntity();
+		missile.setGroup("BULLETS");
 
-	public static Entity createEnemyShip(World world)
+		missile.addComponent(new Transform(parent.getX(), parent.getY(), parent.getRotation()));
+		missile.addComponent(new SpatialForm("Missile"));
+		missile.addComponent(new Velocity());
+		missile.addComponent(new Expires(2000));
+
+		return missile;
+	}
+
+	public static Entity createAsteroid(World world, float x, float y, int size)
 	{
 		Entity e = world.createEntity();
-		e.setGroup("SHIPS");
+		e.setGroup("ASTEROIDS");
 
-		e.addComponent(new Transform());
-		e.addComponent(new SpatialForm("EnemyShip"));
-		e.addComponent(new Health(10));
-		e.addComponent(new Weapon());
-		e.addComponent(new Enemy());
+		e.addComponent(new Transform(x, y));
+		e.addComponent(new SpatialForm("Asteroid"));
+		e.addComponent(new Health(1));
+		e.addComponent(new Asteroid(size));
 		e.addComponent(new Velocity());
 
 		return e;

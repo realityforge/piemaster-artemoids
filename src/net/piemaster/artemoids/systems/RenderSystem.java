@@ -2,9 +2,10 @@ package net.piemaster.artemoids.systems;
 
 import net.piemaster.artemoids.components.SpatialForm;
 import net.piemaster.artemoids.components.Transform;
-import net.piemaster.artemoids.spatials.EnemyShip;
+import net.piemaster.artemoids.spatials.AsteroidSpatial;
 import net.piemaster.artemoids.spatials.Explosion;
 import net.piemaster.artemoids.spatials.Missile;
+import net.piemaster.artemoids.spatials.PlayerImageShip;
 import net.piemaster.artemoids.spatials.PlayerShip;
 import net.piemaster.artemoids.spatials.Spatial;
 
@@ -81,13 +82,17 @@ public class RenderSystem extends EntityProcessingSystem
 		{
 			return new PlayerShip(world, e);
 		}
+		else if ("PlayerImageShip".equalsIgnoreCase(spatialFormFile))
+		{
+			return new PlayerImageShip(world, e);
+		}
 		else if ("Missile".equalsIgnoreCase(spatialFormFile))
 		{
 			return new Missile(world, e);
 		}
-		else if ("EnemyShip".equalsIgnoreCase(spatialFormFile))
+		else if ("Asteroid".equalsIgnoreCase(spatialFormFile))
 		{
-			return new EnemyShip(world, e);
+			return new AsteroidSpatial(world, e);
 		}
 		else if ("BulletExplosion".equalsIgnoreCase(spatialFormFile))
 		{

@@ -1,6 +1,6 @@
 package net.piemaster.artemoids.systems;
 
-import net.piemaster.artemoids.components.Enemy;
+import net.piemaster.artemoids.components.Asteroid;
 import net.piemaster.artemoids.components.Transform;
 import net.piemaster.artemoids.components.Velocity;
 
@@ -10,15 +10,15 @@ import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntityProcessingSystem;
 
-public class EnemyShipMovementSystem extends EntityProcessingSystem
+public class AsteroidMovementSystem extends EntityProcessingSystem
 {
 	private GameContainer container;
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Velocity> velocityMapper;
 
-	public EnemyShipMovementSystem(GameContainer container)
+	public AsteroidMovementSystem(GameContainer container)
 	{
-		super(Transform.class, Enemy.class, Velocity.class);
+		super(Transform.class, Asteroid.class, Velocity.class);
 		this.container = container;
 	}
 
@@ -37,7 +37,11 @@ public class EnemyShipMovementSystem extends EntityProcessingSystem
 
 		if (transform.getX() > container.getWidth() || transform.getX() < 0)
 		{
-			velocity.addAngle(180);
+			velocity.addAngle(180 - 2*(velocity.getAngle() % 180));
+		}
+		if (transform.getY() > container.getHeight() || transform.getY() < 0)
+		{
+			velocity.setAngle(360 - velocity.getAngle());
 		}
 	}
 

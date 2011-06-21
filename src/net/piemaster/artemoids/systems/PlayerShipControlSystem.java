@@ -12,16 +12,18 @@ import org.newdawn.slick.KeyListener;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntityProcessingSystem;
+import com.artemis.utils.TrigLUT;
 
 public class PlayerShipControlSystem extends EntityProcessingSystem implements KeyListener
 {
 	private GameContainer container;
-	private boolean moveRight;
-	private boolean moveLeft;
-	private boolean moveUp;
-	private boolean moveDown;
+	private boolean moveForward;
+	private boolean moveBack;
+	private boolean turnLeft;
+	private boolean turnRight;
 	private boolean shoot;
 	private ComponentMapper<Transform> transformMapper;
+	private ComponentMapper<Velocity> velocityMapper;
 
 	public PlayerShipControlSystem(GameContainer container)
 	{
@@ -33,6 +35,7 @@ public class PlayerShipControlSystem extends EntityProcessingSystem implements K
 	public void initialize()
 	{
 		transformMapper = new ComponentMapper<Transform>(Transform.class, world.getEntityManager());
+		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world.getEntityManager());
 		container.getInput().addKeyListener(this);
 	}
 
@@ -40,31 +43,40 @@ public class PlayerShipControlSystem extends EntityProcessingSystem implements K
 	protected void process(Entity e)
 	{
 		Transform transform = transformMapper.get(e);
+		Velocity vel = velocityMapper.get(e);
 
-		if (moveLeft)
+		if (turnLeft)
 		{
-			transform.addX(world.getDelta() * -0.3f);
+			transform.addRotation(world.getDelta() * -0.3f);
 		}
-		if (moveRight)
+		if (turnRight)
 		{
-			transform.addX(world.getDelta() * 0.3f);
+			transform.addRotation(world.getDelta() * 0.3f);
 		}
-		if (moveUp)
+		if (moveForward || moveBack)
 		{
-			transform.addY(world.getDelta() * -0.3f);
-		}
-		if (moveDown)
-		{
-			transform.addY(world.getDelta() * 0.3f);
+			float thrust = moveForward ? 0.0003f : -0.0003f;
+			float curX = vel.getVelocity() * (float)Math.cos(vel.getAngleAsRadians());
+			float curY = vel.getVelocity() * (float)Math.sin(vel.getAngleAsRadians());
+			
+			float addX = world.getDelta() * thrust * (float)Math.sin(transform.getRotationAsRadians());
+			float addY = world.getDelta() * thrust * (float)-Math.cos(transform.getRotationAsRadians());
+			
+			float newX = curX + addX;
+			float newY = curY + addY;
+			
+			vel.setAngle((float)Math.toDegrees(Math.atan2(newY, newX)));
+			vel.setVelocity((float)Math.sqrt(Math.pow(newX, 2) + Math.pow(newY, 2)));
 		}
 
 		if (shoot)
 		{
-			Entity missile = EntityFactory.createMissile(world);
-			missile.getComponent(Transform.class).setLocation(transform.getX(),
-					transform.getY() - 20);
+			Entity missile = EntityFactory.createMissile(world, transform);
+			float startX = transform.getX() + 20 * (float)Math.sin(transform.getRotationAsRadians());
+			float startY = transform.getY() + 20 * (float)-Math.cos(transform.getRotationAsRadians());
+			missile.getComponent(Transform.class).setLocation(startX, startY);
 			missile.getComponent(Velocity.class).setVelocity(-0.5f);
-			missile.getComponent(Velocity.class).setAngle(90);
+			missile.getComponent(Velocity.class).setAngle(transform.getRotation() + 90);
 			missile.refresh();
 
 			shoot = false;
@@ -76,27 +88,31 @@ public class PlayerShipControlSystem extends EntityProcessingSystem implements K
 	{
 		if (key == Input.KEY_LEFT)
 		{
-			moveLeft = true;
-			moveRight = false;
+			turnLeft = true;
+			turnRight = false;
 		}
 		else if (key == Input.KEY_RIGHT)
 		{
-			moveRight = true;
-			moveLeft = false;
+			turnRight = true;
+			turnLeft = false;
 		}
 		else if (key == Input.KEY_UP)
 		{
-			moveUp = true;
-			moveDown = false;
+			moveForward = true;
+			moveBack = false;
 		}
 		else if (key == Input.KEY_DOWN)
 		{
-			moveDown = true;
-			moveUp = false;
+			moveBack = true;
+			moveForward = false;
 		}
 		else if (key == Input.KEY_SPACE)
 		{
 			shoot = true;
+		}
+		else if(key == Input.KEY_ESCAPE)
+		{
+			container.exit();
 		}
 	}
 
@@ -105,19 +121,19 @@ public class PlayerShipControlSystem extends EntityProcessingSystem implements K
 	{
 		if (key == Input.KEY_LEFT)
 		{
-			moveLeft = false;
+			turnLeft = false;
 		}
 		else if (key == Input.KEY_RIGHT)
 		{
-			moveRight = false;
+			turnRight = false;
 		}
 		else if (key == Input.KEY_UP)
 		{
-			moveUp = false;
+			moveForward = false;
 		}
 		else if (key == Input.KEY_DOWN)
 		{
-			moveDown = false;
+			moveBack = false;
 		}
 		else if (key == Input.KEY_SPACE)
 		{

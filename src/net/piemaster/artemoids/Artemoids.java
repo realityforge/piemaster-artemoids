@@ -7,15 +7,12 @@ import net.piemaster.artemoids.components.Player;
 import net.piemaster.artemoids.components.SpatialForm;
 import net.piemaster.artemoids.components.Transform;
 import net.piemaster.artemoids.components.Velocity;
+import net.piemaster.artemoids.systems.AsteroidMovementSystem;
 import net.piemaster.artemoids.systems.CollisionSystem;
-import net.piemaster.artemoids.systems.EnemyShipMovementSystem;
-import net.piemaster.artemoids.systems.EnemyShooterSystem;
-import net.piemaster.artemoids.systems.EnemySpawnSystem;
 import net.piemaster.artemoids.systems.ExpirationSystem;
-import net.piemaster.artemoids.systems.HealthBarRenderSystem;
-import net.piemaster.artemoids.systems.HudRenderSystem;
 import net.piemaster.artemoids.systems.MovementSystem;
 import net.piemaster.artemoids.systems.PlayerShipControlSystem;
+import net.piemaster.artemoids.systems.PlayerShipMovementSystem;
 import net.piemaster.artemoids.systems.RenderSystem;
 
 import org.newdawn.slick.AppGameContainer;
@@ -35,14 +32,11 @@ public class Artemoids extends BasicGame
 	private GameContainer container;
 
 	private EntitySystem renderSystem;
-	private EntitySystem hudRenderSystem;
 	private EntitySystem controlSystem;
 	private EntitySystem movementSystem;
-	private EntitySystem enemyShooterSystem;
-	private EntitySystem enemyShipMovementSystem;
+	private EntitySystem asteroidMovementSystem;
+	private EntitySystem playerShipMovementSystem;
 	private EntitySystem collisionSystem;
-	private EntitySystem healthBarRenderSystem;
-	private EntitySystem enemySpawnSystem;
 	private EntitySystem expirationSystem;
 
 	public Artemoids()
@@ -59,34 +53,28 @@ public class Artemoids extends BasicGame
 
 		SystemManager systemManager = world.getSystemManager();
 		renderSystem = systemManager.setSystem(new RenderSystem(container));
-		hudRenderSystem = systemManager.setSystem(new HudRenderSystem(container));
 		controlSystem = systemManager.setSystem(new PlayerShipControlSystem(container));
 		movementSystem = systemManager.setSystem(new MovementSystem(container));
-		enemyShooterSystem = systemManager.setSystem(new EnemyShooterSystem());
-		enemyShipMovementSystem = systemManager.setSystem(new EnemyShipMovementSystem(container));
+		asteroidMovementSystem = systemManager.setSystem(new AsteroidMovementSystem(container));
+		playerShipMovementSystem = systemManager.setSystem(new PlayerShipMovementSystem(container));
 		collisionSystem = systemManager.setSystem(new CollisionSystem());
-		healthBarRenderSystem = systemManager.setSystem(new HealthBarRenderSystem(container));
-		enemySpawnSystem = systemManager.setSystem(new EnemySpawnSystem(500, container));
 		expirationSystem = systemManager.setSystem(new ExpirationSystem());
 
 		systemManager.initializeAll();
 
 		initPlayerShip();
-		initEnemyShips();
-
+		initAsteroids();
 	}
-
-	private void initEnemyShips()
+	
+	private void initAsteroids()
 	{
 		Random r = new Random();
 		for (int i = 0; 10 > i; i++)
 		{
-			Entity e = EntityFactory.createEnemyShip(world);
+			Entity e = EntityFactory.createAsteroid(world, r.nextInt(container.getWidth()), r.nextInt(container.getHeight()), 5);
 
-			e.getComponent(Transform.class).setLocation(r.nextInt(container.getWidth()),
-					r.nextInt(400) + 50);
 			e.getComponent(Velocity.class).setVelocity(0.05f);
-			e.getComponent(Velocity.class).setAngle(r.nextBoolean() ? 0 : 180);
+			e.getComponent(Velocity.class).setAngle(r.nextInt(360));
 
 			e.refresh();
 		}
@@ -96,8 +84,10 @@ public class Artemoids extends BasicGame
 	{
 		Entity e = world.createEntity();
 		e.setGroup("SHIPS");
-		e.addComponent(new Transform(container.getWidth() / 2, container.getHeight() - 40));
-		e.addComponent(new SpatialForm("PlayerShip"));
+		e.setTag("PLAYER");
+		e.addComponent(new Transform(container.getWidth() / 2, container.getHeight() / 2));
+		e.addComponent(new Velocity());
+		e.addComponent(new SpatialForm("PlayerImageShip"));
 		e.addComponent(new Health(30));
 		e.addComponent(new Player());
 
@@ -113,10 +103,9 @@ public class Artemoids extends BasicGame
 
 		controlSystem.process();
 		movementSystem.process();
-		enemyShooterSystem.process();
-		enemyShipMovementSystem.process();
+		asteroidMovementSystem.process();
+		playerShipMovementSystem.process();
 		collisionSystem.process();
-		enemySpawnSystem.process();
 		expirationSystem.process();
 	}
 
@@ -124,8 +113,6 @@ public class Artemoids extends BasicGame
 	public void render(GameContainer container, Graphics g) throws SlickException
 	{
 		renderSystem.process();
-		healthBarRenderSystem.process();
-		hudRenderSystem.process();
 	}
 
 	public static void main(String[] args) throws SlickException
