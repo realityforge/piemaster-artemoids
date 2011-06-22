@@ -16,6 +16,7 @@ public class RespawnSystem extends EntityProcessingSystem
 	private ComponentMapper<Health> healthMapper;
 	private ComponentMapper<SpatialForm> spatialMapper;
 
+	@SuppressWarnings("unchecked")
 	public RespawnSystem()
 	{
 		super(Respawn.class, Transform.class, Health.class, SpatialForm.class);

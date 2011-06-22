@@ -16,6 +16,7 @@ public class AsteroidMovementSystem extends EntityProcessingSystem
 	private ComponentMapper<Transform> transformMapper;
 	private ComponentMapper<Velocity> velocityMapper;
 
+	@SuppressWarnings("unchecked")
 	public AsteroidMovementSystem(GameContainer container)
 	{
 		super(Transform.class, Asteroid.class, Velocity.class);

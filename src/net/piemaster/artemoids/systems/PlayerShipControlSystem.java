@@ -13,7 +13,6 @@ import org.newdawn.slick.KeyListener;
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
 import com.artemis.EntityProcessingSystem;
-import com.artemis.utils.TrigLUT;
 
 public class PlayerShipControlSystem extends EntityProcessingSystem implements KeyListener
 {
@@ -27,6 +26,7 @@ public class PlayerShipControlSystem extends EntityProcessingSystem implements K
 	private ComponentMapper<Velocity> velocityMapper;
 	private ComponentMapper<Health> healthMapper;
 
+	@SuppressWarnings("unchecked")
 	public PlayerShipControlSystem(GameContainer container)
 	{
 		super(Transform.class, Player.class, Health.class);

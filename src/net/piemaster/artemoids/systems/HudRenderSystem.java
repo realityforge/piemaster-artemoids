@@ -17,6 +17,7 @@ public class HudRenderSystem extends EntityProcessingSystem
 	private Graphics g;
 	private ComponentMapper<Score> scoreMapper;
 
+	@SuppressWarnings("unchecked")
 	public HudRenderSystem(GameContainer container)
 	{
 		super(Score.class, Player.class);

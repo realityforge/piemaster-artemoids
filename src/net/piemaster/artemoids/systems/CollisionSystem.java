@@ -4,7 +4,6 @@ import net.piemaster.artemoids.EntityFactory;
 import net.piemaster.artemoids.components.Asteroid;
 import net.piemaster.artemoids.components.Health;
 import net.piemaster.artemoids.components.Score;
-import net.piemaster.artemoids.components.SpatialForm;
 import net.piemaster.artemoids.components.Transform;
 import net.piemaster.artemoids.components.Velocity;
 
@@ -20,6 +19,7 @@ public class CollisionSystem extends EntitySystem
 	private ComponentMapper<Health> healthMapper;
 	private ComponentMapper<Asteroid> asteroidMapper;
 
+	@SuppressWarnings("unchecked")
 	public CollisionSystem()
 	{
 		super(Transform.class);

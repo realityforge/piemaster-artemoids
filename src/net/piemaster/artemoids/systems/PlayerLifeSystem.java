@@ -18,8 +18,8 @@ public class PlayerLifeSystem extends EntitySystem
 	private ComponentMapper<Health> healthMapper;
 	private ComponentMapper<Velocity> velocityMapper;
 	private ComponentMapper<SpatialForm> spatialMapper;
-	private ComponentMapper<Respawn> respawnMapper;
 
+	@SuppressWarnings("unchecked")
 	public PlayerLifeSystem()
 	{
 		super(Player.class, Health.class, Transform.class, Velocity.class, SpatialForm.class, Respawn.class);
@@ -31,7 +31,6 @@ public class PlayerLifeSystem extends EntitySystem
 		healthMapper = new ComponentMapper<Health>(Health.class, world.getEntityManager());
 		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world.getEntityManager());
 		spatialMapper = new ComponentMapper<SpatialForm>(SpatialForm.class, world.getEntityManager());
-		respawnMapper = new ComponentMapper<Respawn>(Respawn.class, world.getEntityManager());
 	}
 
 	@Override

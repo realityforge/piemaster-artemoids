@@ -4,7 +4,6 @@ import net.piemaster.artemoids.components.Transform;
 import net.piemaster.artemoids.components.Velocity;
 
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 
 import com.artemis.ComponentMapper;
 import com.artemis.Entity;
@@ -13,15 +12,13 @@ import com.artemis.utils.TrigLUT;
 
 public class MovementSystem extends EntityProcessingSystem
 {
-	private GameContainer container;
-	private Graphics g;
 	private ComponentMapper<Velocity> velocityMapper;
 	private ComponentMapper<Transform> transformMapper;
 
+	@SuppressWarnings("unchecked")
 	public MovementSystem(GameContainer container)
 	{
 		super(Transform.class, Velocity.class);
-		this.container = container;
 	}
 
 	@Override

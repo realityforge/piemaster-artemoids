@@ -25,6 +25,7 @@ public class RenderSystem extends EntityProcessingSystem
 	private ComponentMapper<Transform> transformMapper;
 	private GameContainer container;
 
+	@SuppressWarnings("unchecked")
 	public RenderSystem(GameContainer container)
 	{
 		super(Transform.class, SpatialForm.class);

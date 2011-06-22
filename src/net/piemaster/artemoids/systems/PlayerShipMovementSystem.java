@@ -14,8 +14,8 @@ public class PlayerShipMovementSystem extends EntityProcessingSystem
 {
 	private GameContainer container;
 	private ComponentMapper<Transform> transformMapper;
-	private ComponentMapper<Velocity> velocityMapper;
 
+	@SuppressWarnings("unchecked")
 	public PlayerShipMovementSystem(GameContainer container)
 	{
 		super(Transform.class, Player.class, Velocity.class);
@@ -26,14 +26,12 @@ public class PlayerShipMovementSystem extends EntityProcessingSystem
 	public void initialize()
 	{
 		transformMapper = new ComponentMapper<Transform>(Transform.class, world.getEntityManager());
-		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world.getEntityManager());
 	}
 
 	@Override
 	protected void process(Entity e)
 	{
 		Transform transform = transformMapper.get(e);
-		Velocity velocity = velocityMapper.get(e);
 
 		if (transform.getX() > container.getWidth())
 		{
