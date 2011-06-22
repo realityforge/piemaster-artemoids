@@ -3,6 +3,7 @@ package net.piemaster.artemoids.systems;
 import net.piemaster.artemoids.EntityFactory;
 import net.piemaster.artemoids.components.Asteroid;
 import net.piemaster.artemoids.components.Health;
+import net.piemaster.artemoids.components.Score;
 import net.piemaster.artemoids.components.SpatialForm;
 import net.piemaster.artemoids.components.Transform;
 import net.piemaster.artemoids.components.Velocity;
@@ -45,46 +46,49 @@ public class CollisionSystem extends EntitySystem
 			rockLoop: for (int a = 0; rocks.size() > a; a++)
 			{
 				Entity rock = rocks.get(a);
-				
-				if(bullets != null)
+
+				if (bullets != null)
 				{
 					for (int b = 0; bullets.size() > b; b++)
 					{
 						Entity bullet = bullets.get(b);
-						
+
 						if (collisionExists(bullet, rock))
 						{
 							Transform tb = transformMapper.get(bullet);
-							EntityFactory.createBulletExplosion(world, tb.getX(), tb.getY()).refresh();
-							
+							EntityFactory.createBulletExplosion(world, tb.getX(), tb.getY())
+									.refresh();
+
 							world.deleteEntity(bullet);
 							world.getGroupManager().remove(bullet);
 							bullets = world.getGroupManager().getEntities("BULLETS");
-	
+
 							Health health = healthMapper.get(rock);
 							health.addDamage(1);
-	
+
 							if (!health.isAlive())
 							{
 								handleAsteroidCollision(rock);
-								
+								player.getComponent(Score.class).incrementScore();
+
 								continue rockLoop;
 							}
 						}
 					}
 				}
 
-				if(player != null)
+				if (player != null)
 				{
-					if (collisionExists(player, rock))
+					if (healthMapper.get(player).isAlive() && collisionExists(player, rock))
 					{
 						handleAsteroidCollision(rock);
-						
-						Transform tp = transformMapper.get(player);
-						EntityFactory.createShipExplosion(world, tp.getX(), tp.getY()).refresh();
-						world.deleteEntity(player);
-						world.getTagManager().unregister("PLAYER");
-						player = null;
+
+						Health health = healthMapper.get(player);
+						health.addDamage(1);
+
+						// world.deleteEntity(player);
+						// world.getTagManager().unregister("PLAYER");
+						// player = null;
 					}
 				}
 			}
@@ -95,32 +99,32 @@ public class CollisionSystem extends EntitySystem
 	{
 		Asteroid a = asteroidMapper.get(e2);
 		int distance = 20;
-		if(e2 != null)
+		if (e2 != null)
 		{
 			distance = a.getSize() * 10;
 		}
-		
+
 		Transform t1 = transformMapper.get(e1);
 		Transform t2 = transformMapper.get(e2);
 		return t1.getDistanceTo(t2) < distance;
 	}
-	
+
 	private void handleAsteroidCollision(Entity rock)
 	{
 		Transform ts = transformMapper.get(rock);
-		EntityFactory.createShipExplosion(world, ts.getX(), ts.getY())
-				.refresh();
-		
+		EntityFactory.createShipExplosion(world, ts.getX(), ts.getY()).refresh();
+
 		Asteroid roid = asteroidMapper.get(rock);
-		if(roid.getSize() > 1)
+		if (roid.getSize() > 1)
 		{
-			Entity e = EntityFactory.createAsteroid(world, ts.getX(), ts.getY(), roid.getSize()-1);
+			Entity e = EntityFactory
+					.createAsteroid(world, ts.getX(), ts.getY(), roid.getSize() - 1);
 			e.getComponent(Transform.class).setLocation(ts.getX(), ts.getY());
 			e.getComponent(Velocity.class).setVelocity(0.05f);
 			e.getComponent(Velocity.class).setAngle(velocityMapper.get(rock).getAngle() + 45);
 			e.refresh();
-			
-			e = EntityFactory.createAsteroid(world, ts.getX(), ts.getY(), roid.getSize()-1);
+
+			e = EntityFactory.createAsteroid(world, ts.getX(), ts.getY(), roid.getSize() - 1);
 			e.getComponent(Velocity.class).setVelocity(0.05f);
 			e.getComponent(Velocity.class).setAngle(velocityMapper.get(rock).getAngle() - 45);
 			e.refresh();

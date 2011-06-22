@@ -34,6 +34,11 @@ public class Health extends Component
 			health = 0;
 	}
 
+	public void resetHealth()
+	{
+		health = maximumHealth;
+	}
+
 	public boolean isAlive()
 	{
 		return health > 0;

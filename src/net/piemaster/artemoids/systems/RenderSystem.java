@@ -50,7 +50,8 @@ public class RenderSystem extends EntityProcessingSystem
 
 		if (transform.getX() >= 0 && transform.getY() >= 0
 				&& transform.getX() < container.getWidth()
-				&& transform.getY() < container.getHeight() && spatial != null)
+				&& transform.getY() < container.getHeight() && spatial != null
+				&& spatialFormMapper.get(e).isVisible())
 		{
 			spatial.render(graphics);
 		}

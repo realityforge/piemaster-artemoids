@@ -3,16 +3,34 @@ package net.piemaster.artemoids;
 import net.piemaster.artemoids.components.Asteroid;
 import net.piemaster.artemoids.components.Expires;
 import net.piemaster.artemoids.components.Health;
+import net.piemaster.artemoids.components.Player;
+import net.piemaster.artemoids.components.Respawn;
+import net.piemaster.artemoids.components.Score;
 import net.piemaster.artemoids.components.SpatialForm;
 import net.piemaster.artemoids.components.Transform;
 import net.piemaster.artemoids.components.Velocity;
-import net.piemaster.artemoids.components.Weapon;
 
 import com.artemis.Entity;
 import com.artemis.World;
 
 public class EntityFactory
 {
+	public static Entity createPlayerShip(World world)
+	{
+		Entity player = world.createEntity();
+		player.setGroup("SHIPS");
+		player.setTag("PLAYER");
+		player.addComponent(new Transform());
+		player.addComponent(new Velocity());
+		player.addComponent(new SpatialForm("PlayerImageShip"));
+		player.addComponent(new Health(1));
+		player.addComponent(new Player());
+		player.addComponent(new Score());
+		player.addComponent(new Respawn(2000));
+		
+		return player;
+	}
+	
 	public static Entity createMissile(World world)
 	{
 		Entity missile = world.createEntity();
