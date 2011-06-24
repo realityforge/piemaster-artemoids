@@ -116,10 +116,6 @@ public class PlayerShipControlSystem extends EntityProcessingSystem implements K
 		{
 			shoot = true;
 		}
-		else if(key == Input.KEY_ESCAPE)
-		{
-			container.exit();
-		}
 	}
 
 	@Override
