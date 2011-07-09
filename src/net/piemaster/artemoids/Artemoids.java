@@ -16,7 +16,7 @@ public class Artemoids extends StateBasedGame
 	public Artemoids()
 	{
 		super("Artemoids");
-
+		
 		this.addState(new MainMenuState(MAINMENUSTATE));
 		this.addState(new GameplayState(GAMEPLAYSTATE));
 		this.enterState(MAINMENUSTATE);
@@ -31,10 +31,11 @@ public class Artemoids extends StateBasedGame
 	}
 
 	@Override
-	public void initStatesList(GameContainer gameContainer) throws SlickException
+	public void initStatesList(GameContainer container) throws SlickException
 	{
-
-		this.getState(MAINMENUSTATE).init(gameContainer, this);
-		this.getState(GAMEPLAYSTATE).init(gameContainer, this);
+		container.setTargetFrameRate(100);
+		
+//		this.getState(MAINMENUSTATE).init(gameContainer, this);
+//		this.getState(GAMEPLAYSTATE).init(gameContainer, this);
 	}
 }

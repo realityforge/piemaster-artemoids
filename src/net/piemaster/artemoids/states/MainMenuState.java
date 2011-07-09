@@ -2,6 +2,7 @@ package net.piemaster.artemoids.states;
 
 import net.piemaster.artemoids.Artemoids;
 
+import org.lwjgl.input.Keyboard;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -12,14 +13,12 @@ import org.newdawn.slick.state.StateBasedGame;
 public class MainMenuState extends BasicGameState
 {
 	private int stateID = -1;
+	private GameContainer gc;
+	private StateBasedGame sbg;
 
 	private Image backgroundImage;
 	private Image playImage;
 	private Image exitImage;
-
-	private boolean wasClick;
-	private int clickX;
-	private int clickY;
 
 	private int playX;
 	private int playY;
@@ -39,6 +38,9 @@ public class MainMenuState extends BasicGameState
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException
 	{
+		this.gc = gc;
+		this.sbg = sbg;
+
 		backgroundImage = new Image("resource/menu_background.png");
 		playImage = new Image("resource/menu_button_play.png");
 		exitImage = new Image("resource/menu_button_exit.png");
@@ -49,6 +51,10 @@ public class MainMenuState extends BasicGameState
 		exitY = gc.getHeight() - 60;
 	}
 
+	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException
+	{
+	}
+
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException
 	{
 		backgroundImage.draw(0, 0);
@@ -56,41 +62,44 @@ public class MainMenuState extends BasicGameState
 		exitImage.draw(exitX, exitY);
 	}
 
-	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException
-	{
-
-		if (wasClick)
-		{
-			if (clickX >= playX && clickX <= playX + playImage.getWidth() && 
-					clickY >= playY	&& clickY <= playY + playImage.getHeight())
-			{
-				handlePlayClick(gc, sbg);
-			}
-			else if (clickX >= exitX && clickX <= exitX + exitImage.getWidth() && 
-					clickY >= exitY	&& clickY <= exitY + exitImage.getHeight())
-			{
-				handleExitClick(gc, sbg);
-			}
-			wasClick = false;
-		}
-	}
-
 	@Override
 	public void mouseClicked(int button, int x, int y, int clickCount)
 	{
 		super.mouseClicked(button, x, y, clickCount);
 
-		wasClick = true;
-		clickX = x;
-		clickY = y;
+		if (x >= playX && x <= playX + playImage.getWidth() && y >= playY
+				&& y <= playY + playImage.getHeight())
+		{
+			playGame();
+		}
+		else if (x >= exitX && x <= exitX + exitImage.getWidth() && y >= exitY
+				&& y <= exitY + exitImage.getHeight())
+		{
+			exitGame();
+		}
 	}
 
-	protected void handlePlayClick(GameContainer gc, StateBasedGame sbg)
+	@Override
+	public void keyPressed(int key, char c)
+	{
+		super.keyPressed(key, c);
+
+		if (key == Keyboard.KEY_RETURN)
+		{
+			playGame();
+		}
+		else if (key == Keyboard.KEY_ESCAPE)
+		{
+			exitGame();
+		}
+	}
+
+	protected void playGame()
 	{
 		sbg.enterState(Artemoids.GAMEPLAYSTATE);
 	}
 
-	protected void handleExitClick(GameContainer gc, StateBasedGame sbg)
+	protected void exitGame()
 	{
 		gc.exit();
 	}

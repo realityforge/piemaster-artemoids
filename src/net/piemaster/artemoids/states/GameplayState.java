@@ -37,17 +37,18 @@ public class GameplayState extends BasicGameState
 	private World world;
 	private GameContainer container;
 	private StateBasedGame sbg;
-	
-	private EntitySystem renderSystem;
-	private EntitySystem hudRenderSystem;
+
 	private EntitySystem controlSystem;
 	private EntitySystem movementSystem;
 	private EntitySystem asteroidMovementSystem;
 	private EntitySystem playerShipMovementSystem;
 	private EntitySystem collisionSystem;
 	private EntitySystem expirationSystem;
-	private EntitySystem respawnSystem;
 	private EntitySystem playerLifeSystem;
+	private EntitySystem respawnSystem;
+	
+	private EntitySystem renderSystem;
+	private EntitySystem hudRenderSystem;
 
 	public GameplayState(int stateID)
 	{
@@ -64,16 +65,14 @@ public class GameplayState extends BasicGameState
 	{
 		this.container = gc;
 		this.sbg = sbg;
-		
+
 		world = new World();
 
 		SystemManager systemManager = world.getSystemManager();
 		controlSystem = systemManager.setSystem(new PlayerShipControlSystem(gc));
 		movementSystem = systemManager.setSystem(new MovementSystem(gc));
-		asteroidMovementSystem = systemManager.setSystem(new AsteroidMovementSystem(
-				gc));
-		playerShipMovementSystem = systemManager.setSystem(new PlayerShipMovementSystem(
-				gc));
+		asteroidMovementSystem = systemManager.setSystem(new AsteroidMovementSystem(gc));
+		playerShipMovementSystem = systemManager.setSystem(new PlayerShipMovementSystem(gc));
 		collisionSystem = systemManager.setSystem(new CollisionSystem());
 		expirationSystem = systemManager.setSystem(new ExpirationSystem());
 		respawnSystem = systemManager.setSystem(new RespawnSystem());
@@ -153,8 +152,8 @@ public class GameplayState extends BasicGameState
 	public void keyPressed(int key, char c)
 	{
 		super.keyPressed(key, c);
-		
-		if(key == Keyboard.KEY_ESCAPE)
+
+		if (key == Keyboard.KEY_ESCAPE)
 		{
 			sbg.enterState(Artemoids.MAINMENUSTATE);
 		}
