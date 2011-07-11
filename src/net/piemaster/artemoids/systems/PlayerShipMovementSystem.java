@@ -25,7 +25,7 @@ public class PlayerShipMovementSystem extends EntityProcessingSystem
 	@Override
 	public void initialize()
 	{
-		transformMapper = new ComponentMapper<Transform>(Transform.class, world.getEntityManager());
+		transformMapper = new ComponentMapper<Transform>(Transform.class, world);
 	}
 
 	@Override

@@ -24,8 +24,8 @@ public class MovementSystem extends EntityProcessingSystem
 	@Override
 	public void initialize()
 	{
-		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world.getEntityManager());
-		transformMapper = new ComponentMapper<Transform>(Transform.class, world.getEntityManager());
+		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world);
+		transformMapper = new ComponentMapper<Transform>(Transform.class, world);
 	}
 
 	@Override

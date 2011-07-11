@@ -26,8 +26,8 @@ public class AsteroidSpatial extends Spatial
 	@Override
 	public void initalize()
 	{
-		transform = new ComponentMapper<Transform>(Transform.class, world.getEntityManager()).get(owner);
-		Asteroid a = new ComponentMapper<Asteroid>(Asteroid.class, world.getEntityManager()).get(owner);
+		transform = new ComponentMapper<Transform>(Transform.class, world).get(owner);
+		Asteroid a = new ComponentMapper<Asteroid>(Asteroid.class, world).get(owner);
 		int size = a.getSize();
 		
 		Random r = new Random();

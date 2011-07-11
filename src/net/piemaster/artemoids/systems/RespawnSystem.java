@@ -25,10 +25,10 @@ public class RespawnSystem extends EntityProcessingSystem
 	@Override
 	public void initialize()
 	{
-		respawnMapper = new ComponentMapper<Respawn>(Respawn.class, world.getEntityManager());
-		transformMapper = new ComponentMapper<Transform>(Transform.class, world.getEntityManager());
-		healthMapper = new ComponentMapper<Health>(Health.class, world.getEntityManager());
-		spatialMapper = new ComponentMapper<SpatialForm>(SpatialForm.class, world.getEntityManager());
+		respawnMapper = new ComponentMapper<Respawn>(Respawn.class, world);
+		transformMapper = new ComponentMapper<Transform>(Transform.class, world);
+		healthMapper = new ComponentMapper<Health>(Health.class, world);
+		spatialMapper = new ComponentMapper<SpatialForm>(SpatialForm.class, world);
 	}
 
 	@Override

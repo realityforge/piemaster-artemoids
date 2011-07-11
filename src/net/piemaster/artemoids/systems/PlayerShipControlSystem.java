@@ -36,9 +36,9 @@ public class PlayerShipControlSystem extends EntityProcessingSystem implements K
 	@Override
 	public void initialize()
 	{
-		transformMapper = new ComponentMapper<Transform>(Transform.class, world.getEntityManager());
-		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world.getEntityManager());
-		healthMapper = new ComponentMapper<Health>(Health.class, world.getEntityManager());
+		transformMapper = new ComponentMapper<Transform>(Transform.class, world);
+		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world);
+		healthMapper = new ComponentMapper<Health>(Health.class, world);
 		container.getInput().addKeyListener(this);
 	}
 

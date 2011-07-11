@@ -28,9 +28,9 @@ public class PlayerLifeSystem extends EntitySystem
 	@Override
 	public void initialize()
 	{
-		healthMapper = new ComponentMapper<Health>(Health.class, world.getEntityManager());
-		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world.getEntityManager());
-		spatialMapper = new ComponentMapper<SpatialForm>(SpatialForm.class, world.getEntityManager());
+		healthMapper = new ComponentMapper<Health>(Health.class, world);
+		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world);
+		spatialMapper = new ComponentMapper<SpatialForm>(SpatialForm.class, world);
 	}
 
 	@Override

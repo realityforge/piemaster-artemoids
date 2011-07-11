@@ -28,10 +28,10 @@ public class CollisionSystem extends EntitySystem
 	@Override
 	public void initialize()
 	{
-		transformMapper = new ComponentMapper<Transform>(Transform.class, world.getEntityManager());
-		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world.getEntityManager());
-		healthMapper = new ComponentMapper<Health>(Health.class, world.getEntityManager());
-		asteroidMapper = new ComponentMapper<Asteroid>(Asteroid.class, world.getEntityManager());
+		transformMapper = new ComponentMapper<Transform>(Transform.class, world);
+		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world);
+		healthMapper = new ComponentMapper<Health>(Health.class, world);
+		asteroidMapper = new ComponentMapper<Asteroid>(Asteroid.class, world);
 	}
 
 	@Override

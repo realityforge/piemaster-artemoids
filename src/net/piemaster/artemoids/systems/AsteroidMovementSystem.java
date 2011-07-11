@@ -26,8 +26,8 @@ public class AsteroidMovementSystem extends EntityProcessingSystem
 	@Override
 	public void initialize()
 	{
-		transformMapper = new ComponentMapper<Transform>(Transform.class, world.getEntityManager());
-		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world.getEntityManager());
+		transformMapper = new ComponentMapper<Transform>(Transform.class, world);
+		velocityMapper = new ComponentMapper<Velocity>(Velocity.class, world);
 	}
 
 	@Override

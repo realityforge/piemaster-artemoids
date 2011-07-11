@@ -39,8 +39,8 @@ public class RenderSystem extends EntityProcessingSystem
 	public void initialize()
 	{
 		spatialFormMapper = new ComponentMapper<SpatialForm>(SpatialForm.class,
-				world.getEntityManager());
-		transformMapper = new ComponentMapper<Transform>(Transform.class, world.getEntityManager());
+				world);
+		transformMapper = new ComponentMapper<Transform>(Transform.class, world);
 	}
 
 	@Override
